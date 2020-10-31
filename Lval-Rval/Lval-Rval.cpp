@@ -37,10 +37,30 @@ void printName(const std::string& name)
     std::cout << name << "\n\n";
 }
 
+/*
+    The below is an example of how we can detect temporary objects
+    vs. lvalues [storage values] and do something special with them.
+
+    This is very useful in move semantics / optimization.
+*/
+
+
 // rvalue reference only accepts rvalues.
-void printRName(std::string&& name)
+//void printRName(std::string&& name)
+//{
+//    std::cout << "Rvalue reference: " << name << "\n\n";
+//}
+
+// overloaded function that accepts only lvalues
+//void printRName(std::string& name)
+//{
+//    std::cout << "Overloaded function accepting only lvalues: " << name << "\n\n";
+//}
+
+// overloaded function that accepts l and r values using const
+void printRName(const std::string& name)
 {
-    std::cout << "Rvalue reference: " << name << "\n\n";
+    std::cout << "Overloaded function accepts l and r values: " << name << "\n\n";
 }
 
 int main()
@@ -79,4 +99,14 @@ int main()
     // change parameter to const, can now pass
     // temporary value.
     printName("Lorem");
+
+    std::string foos = "foos";
+    std::string foosy = "foosy";
+    std::string fooString = foos + " " + foosy;
+
+    // printRName (no overload) accepts only rvalues.
+    printRName("foo");
+    // printRname (overloaded) accepts lvalues and rvalues.
+    printRName("foo");
+
 }
